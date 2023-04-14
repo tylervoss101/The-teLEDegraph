@@ -1,0 +1,97 @@
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
+<meta charset="utf-8"/>
+</head>
+<body style="background-color: black">
+<h2 style="font-size: 60px; color: white">The teLEDgraph</h2>
+
+<script>
+// Create MQTT client using websockets
+client = new Paho.MQTT.Client(host='iot.cs.calvin.edu', 8083, clientId='thv4');
+
+// set callback handlers
+client.onConnectionLost = onConnectionLost;
+client.onMessageArrived = onMessageArrived;
+
+// connect the to the MQTT broker over websockets
+var options = {useSSL:true, userName:'cs326', password:'piot', keepAliveInterval:60, onSuccess:onConnect, onFailure:onFail};
+client.connect(options);
+
+// Called when the client connects
+function onConnect() {
+   // Once connection has been made, subscribe to motion topic
+   console.log("Connected!");
+   client.subscribe("thv4/motion");
+}
+
+function onFail(context) {
+   console.log(context);
+   console.log("Connection failed!");
+}
+
+// called when the client loses its connection
+function onConnectionLost(responseObject) {
+   if (responseObject.errorCode !== 0) {
+     console.log("Connection Lost:"+responseObject.errorMessage);
+   }
+}
+
+// called when a message arrives
+function onMessageArrived(message) {
+   console.log("Message: " + message.payloadString);
+   console.log("Topic:   " + message.destinationName);
+   console.log("QoS:     " + message.qos);
+   if (message.destinationName == 'thv4/motion') {
+      if (message.payloadString == '1') {
+         document.getElementById("motion").innerHTML="<b>ON</b>";
+      }
+      else {
+         document.getElementById("motion").innerHTML="Off";
+      }
+   }
+}
+
+// publish an LED message
+function setLED(state) {
+   console.log("Publish LED = " + state);
+   var message = new Paho.MQTT.Message(state);
+   message.destinationName = 'thv4/LED';
+   message.qos = 0;
+   client.send(message);
+}
+
+function sendLEDMessage(state) {
+   console.log("Sending Message... " + state);
+   var message = new Paho.MQTT.Message(state);
+   message.destinationName = 'thv4/LEDMessage';
+   message.qos = 0;
+   client.send(message);
+}
+
+
+</script>
+<input  style="font-size: 60px; color:white; background-color: transparent; font-weight: bold" type="button" value="On" onclick="setLED('1');">
+<input  style="font-size: 60px; color:white;background-color: transparent; font-weight: bold" type="button" value="Off" onclick="setLED('0');">
+<input style="font-size: 60px; color:white; background-color: transparent;  font-weight: bold" type="button" value="Wipe" onclick="setLED('2');">
+<input style="font-size: 60px; color:white; background-color: transparent;  font-weight: bold" type="button" value="PARTY" onclick="setLED('3');">
+
+<hr>
+<input style="border-radius: 60px; background-color: red;padding:30px" value=" " type="button" onclick="setLED('11');">
+<input type="button" style="border-radius: 60px; background-color: orange;padding:30px" value=" " onclick="setLED('12');">
+<input type="button" style="border-radius: 60px; background-color: yellow;padding:30px" value=" " onclick="setLED('13');">
+<input type="button" style="border-radius: 60px; background-color: green;padding:30px" value=" " onclick="setLED('14');">
+<input type="button" style="border-radius: 60px; background-color: blue;padding:30px" value=" " onclick="setLED('15');">
+<input type="button" style="border-radius: 60px; background-color: purple;padding:30px" value=" " onclick="setLED('16');">
+<input type="button" style="border-radius: 60px; background-color: white;padding:30px" value=" " onclick="setLED('17');">
+
+<p style="font-family: Arial; font-weight:bold; color: black">Note: Your messages will not be stored</p>
+<input style="font-family: Arial; font-size: 40px ; padding: 10px" type="text" id="textbox"> </input> <br>
+<input style="margin-top: 10px ; font-size: 60px; color:white;background-color: black; font-weight: bold"
+id="input" type="button" value="Submit" onclick="sendLEDMessage(document.getElementById('textbox').value);">
+<span id="motion"></span>
+<p style="font-family: Arial; font-weight:bold; color: white">Note: Your messages will not be stored</p>
+
+<a style="color: white" href="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/International_Morse_Code.svg/260px-International_Morse_Code.svg.png">Morse Code Page for Reference</a>
+</body>
+</html>
