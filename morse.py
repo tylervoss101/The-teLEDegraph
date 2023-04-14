@@ -1,11 +1,9 @@
 
 # Dictionary representing the morse code chart
 #Got help from geeksforgeeks.org/morse-code/translator-python
-MORSE_CODE_DICT = { 'A':'.-', 'B':'-...',
-                    'C':'-.-.', 'D':'-..', 'E':'.',
-                    'F':'..-.', 'G':'--.', 'H':'....',
-                    'I':'..', 'J':'.---', 'K':'-.-',
-                    'L':'.-..', 'M':'--', 'N':'-.',
+MORSE_DICTIONARY = { 'A':'.-', 'B':'-...', 'C':'-.-.', 'D':'-..', 'E':'.', 
+                    'F':'..-.', 'G':'--.', 'H':'....', 'I':'..', 'J':'.---', 
+                    'K':'-.-', 'L':'.-..', 'M':'--', 'N':'-.',
                     'O':'---', 'P':'.--.', 'Q':'--.-',
                     'R':'.-.', 'S':'...', 'T':'-',
                     'U':'..-', 'V':'...-', 'W':'.--',
@@ -21,9 +19,9 @@ MORSE_CODE_DICT = { 'A':'.-', 'B':'-...',
 def encrypt(message):
     message = message.upper()
     cipher = ''
-    for char in message:
-        if char != ' ':
-            cipher += MORSE_CODE_DICT[char] + ' '
+    for character in message:
+        if character != ' ':
+            cipher += MORSE_DICTIONARY[character] + ' '
         else:
             cipher += ' '
     return cipher
