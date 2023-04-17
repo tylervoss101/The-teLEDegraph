@@ -1,7 +1,7 @@
 '''
-CS326 Lab 10
-Author: D. Schuurman
-MQTT motion detector using pi camera.
+CS326 the teLEDgraph
+Authors: Justin Voss and Tyler Voss
+LED strip morse code communicator over MQTT.
 '''
 import sys
 import paho.mqtt.client as mqtt
