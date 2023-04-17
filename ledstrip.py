@@ -76,6 +76,8 @@ color2 = (255,255,0)
 
 
 def buzz(type):
+    ''' Return a long or short buzz based on dot or dash
+    '''
     buzzer.ChangeFrequency(495)
     if type == 'dot':
         buzzer.start(10) 
@@ -200,8 +202,9 @@ def led_morse(message):
         else: 
             pixels1.fill((0, 0, 0))
             time.sleep(1)
-#EXTRA FUN FUNCTIONS
 
+#EXTRA FUN FUNCTIONS
+# Help from Tony DiCola (tony@tonydicola.com) on GitHub
 def wheel(pos):
     """Generate rainbow colors across 0-255 positions."""
     if pos < 85:
