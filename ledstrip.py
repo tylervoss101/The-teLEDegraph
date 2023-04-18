@@ -41,8 +41,8 @@ CERTS = '/etc/ssl/certs/ca-certificates.crt'
 BROKER = 'iot.cs.calvin.edu'
 
 # Note: these constants must be set for broker authentication
-USERNAME = 'cs326'   # broker authentication username
-PASSWORD = 'piot'   # broker authentication password
+USERNAME = 'XXXXX'   # broker authentication username
+PASSWORD = 'XXXXX'   # broker authentication password
 
 #Initialise a strips variable, provide the GPIO Data Pin
 #utilised and the amount of LED Nodes on strip and brightness (0 to 1 value)
