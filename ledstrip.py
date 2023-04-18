@@ -91,16 +91,6 @@ def buzz(type):
         buzzer.stop()
         time.sleep(.0005)
         
-def get_frame(cap):
-    ''' Return grayscale image from camera
-    '''
-    ret = False
-    ret, frame = cap.read()
-    if not ret:
-        print('Frame capture failed...')
-        sys.exit(1)    
-    return cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
 def on_publish(client, userdata, mid):
     ''' Callback when an MQTT message is published
     '''
@@ -151,8 +141,8 @@ def on_message(client, data, msg):
         print(f'Received message: LED = {msg.payload}')
         newMessage = msg.payload.decode('utf-8')
         print(newMessage)
-        print(encrypt(newMessage))
-        led_morse(encrypt((newMessage)))
+        print(encrypt(newMessage))     
+        led_morse(encrypt((newMessage)))   # from Morse.py, uses the function to encrypt the message.
         print(color)
         
 
@@ -168,9 +158,7 @@ def colorWipe(strip, color, wait_ms=50):
         
 def colorDot(strip):
      #Focusing on a particular strip, use the command Fill to make it all a single colour
-    #based on decimal code R, G, B. Number can be anything from 255 - 0. Use a RGB Colour
-    #Code Chart Website to quickly identify a desired fill colour.
-    #pixels1.fill((0, 220, 0))       
+    #based on decimal code R, G, B. Number can be anything from 255 - 0.     
     for i in range(30):
         pixels1[i] = (255,0,0)
         # strip.setPixelColor(i, color)
@@ -180,9 +168,7 @@ def colorDot(strip):
 
 def colorDash(strip):
      #Focusing on a particular strip, use the command Fill to make it all a single colour
-    #based on decimal code R, G, B. Number can be anything from 255 - 0. Use a RGB Colour
-    #Code Chart Website to quickly identify a desired fill colour.
-    #pixels1.fill((0, 220, 0))       
+    #based on decimal code R, G, B. Number can be anything from 255 - 0.       
     for i in range(40):
         pixels1[i] = (0,255,0)
         if i < 50:
@@ -192,13 +178,12 @@ def colorDash(strip):
         
 def led_morse(message):
     for character in message:
-        if character == '-':
+        if character == '-':   # if the letter is a dash, do the dash animation on the LED strip
             colorDash(strip)
             buzz('dash')
-        elif character == '.':
+        elif character == '.':   # if the letter is a dot, do the dot animation on the LED strip
             colorDot(strip)
-            buzz('dot')
-            
+            buzz('dot')  
         else: 
             pixels1.fill((0, 0, 0))
             time.sleep(1)
